@@ -49,7 +49,10 @@ public class Main {
 
             String choice = chooseDoor(doors);
 
-            revealDoorExcessDoors(choice, doors);
+            revealExcessDoors(choice, doors);
+
+            if(outputDoorList(doors.keySet())) System.out.println(" are your remaining choices");
+            else System.out.println(" is your remaining choice");
 
             System.out.println("Would you like to choose a new door? type y if yes");
             String confirmation = scanner.next();
@@ -114,6 +117,34 @@ public class Main {
         return choices;
     }
 
+    //Just outputs the strings sent into it
+    //If there are multiple strings it outputs "string, string, string, and string"
+    //Otherwise it outputs "string"
+    //Note it prints no new lines
+
+    //Returns false if it doesn't have multiple strings to output,
+    // and true if it does. This allows you to customize the output based on whether it should be plural or not
+    public static boolean outputDoorList(Collection<String> input) {
+        ArrayList<String> toOutput = new ArrayList<>(input);
+
+
+        if(toOutput.size() > 1) {
+            toOutput.sort(new AlphabeticalNumericalComparator());
+            String finalDoor = toOutput.get(toOutput.size() - 1);
+            toOutput.remove(toOutput.size() - 1);
+
+            for(String door : toOutput) {
+                System.out.print(door + ", ");
+            }
+            System.out.print("and " + finalDoor);
+            return true;
+
+        } else {
+            System.out.print(toOutput.get(0));
+            return false;
+        }
+    }
+
     public static String chooseDoor(HashMap<String, String> doors) {
 
         String choice;
@@ -121,17 +152,9 @@ public class Main {
 
             System.out.println("Pick a door you have " + doors.keySet().size() +" doors. \n");
 
-            ArrayList<String> keySet = new ArrayList<>(doors.keySet());
-            keySet.sort(new AlphabeticalNumericalComparator());
+            if(outputDoorList(doors.keySet())) System.out.print(" are your options.\n");
 
-            //This is all because it's fencepost problem in reverse
-            String finalDoor = keySet.get(keySet.size() - 1);
-            keySet.remove(keySet.size() - 1);
-
-            for(String door : keySet) {
-                System.out.print(door + ", ");
-            }
-            System.out.print("and " + finalDoor + " are your options.\n");
+            else System.out.println("is your option");
             System.out.println("Type the doors corresponding number to choose that door");
 
             choice = "Door " + scanner.next();
@@ -147,7 +170,7 @@ public class Main {
         return choice;
     }
 
-    public static void revealDoorExcessDoors(String chosenDoor, HashMap<String, String> doors) {
+    public static void revealExcessDoors(String chosenDoor, HashMap<String, String> doors) {
         System.out.println();
 
         Random random = new Random();
@@ -169,16 +192,9 @@ public class Main {
             keySetOrdered.remove(result);
 
         }
-        removedDoors.sort(new AlphabeticalNumericalComparator());
 
-        //This is because it's a fencepost problem, but you need to do something different at the back not at the front
-        String finalDoor = removedDoors.get(removedDoors.size() - 1);
-        removedDoors.remove(removedDoors.size() - 1);
-
-        for(String door : removedDoors) {
-            System.out.print(door + ", ");
-        }
-        System.out.print("and " + finalDoor + " are all " + loss + "s!\n");
+        if(outputDoorList(removedDoors)) System.out.println(" are all " + loss + "s!");
+        else System.out.print(" is a " + loss + "\n");
 
     }
 

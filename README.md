@@ -1,6 +1,8 @@
 # MontyHallProblemTest
 The Monty Hall problem was so weird to me I had to make a program to test it and here it is
 
+Note all the code is on a different branch
+
 
     //I made this entire thing because there was some weird thing about picking from three doors then one of them gets revealed,
     // and then you get to pick again. Now supposedly if you switch you have a 33% chance to be right or something,
